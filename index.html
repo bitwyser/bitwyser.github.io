@@ -177,12 +177,11 @@
             border-left: 2px solid rgba(79,142,247,0.22);   /* always visible */
             background: rgba(79,142,247,0.04);               /* always visible */
             margin-bottom: 7px;
-            transition: background 0.22s, border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+            transition: background 0.22s, border-color 0.22s, box-shadow 0.22s;
         }
         .project-item:hover {
             background: rgba(79,142,247,0.1);
             border-left-color: var(--accent);
-            transform: translateX(5px);
             box-shadow: 0 2px 20px rgba(79,142,247,0.08);
         }
 
@@ -310,20 +309,13 @@
 
         <!-- HOME -->
         <section id="home" class="section active">
-            <h1>I'm BitWyser.</h1>
-            <p class="aka">aka Mandar</p>
+            <h1>I'm BitWyser</h1>
+            <p class="aka">aka mandar.</p>
             <div class="divider"></div>
             <p class="roles">
                 Engineer<span class="sep">·</span>Developer<span class="sep">·</span>Pentester
             </p>
             <div class="links">
-                <a href="https://linkedin.com/in/mandarsh" class="link" title="LinkedIn" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                        <rect x="2" y="9" width="4" height="12"/>
-                        <circle cx="4" cy="4" r="2"/>
-                    </svg>
-                </a>
                 <a href="https://github.com/bitwyser" class="link" title="GitHub" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24">
                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
@@ -333,6 +325,13 @@
                     <svg viewBox="0 0 24 24">
                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                         <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                </a>
+                <a href="https://linkedin.com/in/mandarsh" class="link" title="LinkedIn" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
                     </svg>
                 </a>
             </div>
@@ -358,16 +357,16 @@
                 <li class="project-item">
                     <div class="project-info">
                         <span class="project-name">ArcheSpace</span>
-                        <span class="project-desc">An open source, private space to organize everything you're working on. You can self host it, it syncs through Supabase, and your vault is encrypted in the browser so even the developers can't read what you save.</span>
+                        <span class="project-desc">ArcheSpace is an open source, private, encrypted space to organize everything you are working on.</span>
                     </div>
                     <div class="project-actions">
-                        <a href="https://github.com/bitwyser/Arche" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <!-- git branch icon -->
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
                         <a href="https://archespace.app/" class="proj-btn" title="Live Site" target="_blank" rel="noopener noreferrer">
                             <!-- globe icon -->
                             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </a>
+                        <a href="https://github.com/bitwyser/archespace" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
+                            <!-- git branch icon -->
+                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
                         </a>
                     </div>
                 </li>
@@ -375,7 +374,7 @@
                 <li class="project-item">
                     <div class="project-info">
                         <span class="project-name">Servd</span>
-                        <span class="project-desc">A portable local network server for desktop and Android. Run it and your PC or phone turns into a hub that other devices open right from a browser, with nothing to install. The encrypted dashboard gives you real time chat, file sharing, folder browsing, a reverse proxy, and built in SSH, SFTP and FTPS.</span>
+                        <span class="project-desc">A portable local network server for desktop and Android. Run it and your PC or phone turns into a hub that other devices open right from a browser, with nothing to install.</span>
                     </div>
                     <div class="project-actions">
                         <a href="https://github.com/bitwyser/servd" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
@@ -390,11 +389,11 @@
                         <span class="project-desc">Recipes for hackers. A fast, 100% client-side security and developer toolkit that runs entirely in your browser.</span>
                     </div>
                     <div class="project-actions">
-                        <a href="https://github.com/bitwyser/CyberKitchen" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
                         <a href="https://bitwyser.github.io/CyberKitchen/" class="proj-btn" title="Live Site" target="_blank" rel="noopener noreferrer">
                             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </a>
+                        <a href="https://github.com/bitwyser/CyberKitchen" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
                         </a>
                     </div>
                 </li>
@@ -408,9 +407,6 @@
                         <a href="https://github.com/bitwyser/debloater.sh" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
                             <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
                         </a>
-                        <a href="https://github.com/bitwyser/debloater.sh" class="proj-btn" title="Live Site" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        </a>
                     </div>
                 </li>
 
@@ -423,9 +419,6 @@
                         <a href="https://github.com/bitwyser/Hosts" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
                             <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
                         </a>
-                        <a href="https://github.com/bitwyser/Hosts" class="proj-btn" title="Live Site" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        </a>
                     </div>
                 </li>
 
@@ -435,11 +428,11 @@
                         <span class="project-desc">TL;DR for devs, captured while experimenting with new technologies.</span>
                     </div>
                     <div class="project-actions">
-                        <a href="https://github.com/bitwyser/Cheatsheets" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
                         <a href="https://bitwyser.github.io/Cheatsheets/" class="proj-btn" title="Live Site" target="_blank" rel="noopener noreferrer">
                             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </a>
+                        <a href="https://github.com/bitwyser/Cheatsheets" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
                         </a>
                     </div>
                 </li>
@@ -455,7 +448,7 @@
 
     <div class="status">
         <div class="status-dot"></div>
-        BitWyser Live
+        Live
     </div>
 
     <script>
