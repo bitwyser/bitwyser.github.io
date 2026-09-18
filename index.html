@@ -26,7 +26,8 @@
     <meta name="twitter:description" content="Application Security Consultant and developer. I break applications to find the flaws that matter and build the tools, apps, and scripts I wish existed.">
     <meta name="twitter:image" content="https://bitwyser.github.io/og-image.png">
     <script>
-        // Set theme before paint to avoid a flash
+        // Mark JS available (gates reveal animations) and set theme before paint
+        document.documentElement.classList.add('js');
         (function () {
             try {
                 var t = localStorage.getItem('theme') || 'dark';
@@ -75,7 +76,31 @@
             transition: background 0.25s, color 0.25s;
         }
 
+        /* Universal blue-accent ambient gradient */
+        body::before {
+            content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                radial-gradient(60rem 42rem at 12% -8%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%),
+                radial-gradient(52rem 40rem at 108% 8%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 58%),
+                radial-gradient(48rem 40rem at 50% 118%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%);
+        }
+
         a { color: inherit; text-decoration: none; }
+
+        /* Scroll progress bar */
+        .scroll-progress {
+            position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 40;
+            transform: scaleX(0); transform-origin: 0 50%;
+            background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 45%, #9ec4ff));
+        }
+
+        /* Scroll / load reveal (only when JS can un-hide) */
+        html.js .reveal {
+            opacity: 0; transform: translateY(18px);
+            transition: opacity 0.6s cubic-bezier(.2,.7,.2,1), transform 0.6s cubic-bezier(.2,.7,.2,1);
+            will-change: opacity, transform;
+        }
+        html.js .reveal.in { opacity: 1; transform: none; }
 
         .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 2rem; }
         @media (max-width: 560px) { .wrap { padding: 0 1.3rem; } }
@@ -113,13 +138,15 @@
         .toggle {
             display: inline-flex; align-items: center; justify-content: center;
             width: 34px; height: 34px; border-radius: 8px;
-            border: 1px solid var(--line); background: var(--bg-soft);
+            border: none; background: none;
             color: var(--muted); cursor: pointer;
-            transition: color 0.2s, border-color 0.2s;
+            transition: color 0.2s, transform 0.15s;
         }
-        .toggle:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
-        .toggle svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7;
-            stroke-linecap: round; stroke-linejoin: round; }
+        .toggle:hover { color: var(--accent); }
+        .toggle:active { transform: scale(0.9); }
+        .toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7;
+            stroke-linecap: round; stroke-linejoin: round; transition: transform 0.4s ease; }
+        .toggle:hover svg { transform: rotate(20deg); }
         .toggle .moon { display: none; }
         :root[data-theme="light"] .toggle .sun { display: none; }
         :root[data-theme="light"] .toggle .moon { display: inline; }
@@ -156,9 +183,13 @@
         h1 {
             font-size: clamp(2.7rem, 8vw, 4.4rem);
             font-weight: 620; letter-spacing: -0.035em; line-height: 1.0;
+            background: linear-gradient(118deg, var(--text) 34%, color-mix(in srgb, var(--accent) 78%, var(--text)));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
         }
         h1 .aka { display: block; font-size: 0.92rem; font-weight: 400; letter-spacing: 0.04em;
-            color: var(--dim); font-family: var(--mono); margin-top: 1rem; text-transform: lowercase; }
+            color: var(--dim); -webkit-text-fill-color: var(--dim);
+            font-family: var(--mono); margin-top: 1rem; text-transform: lowercase; }
         .roles { margin-top: 1.7rem; font-size: 1.1rem; color: var(--muted); }
         .roles b { color: var(--text); font-weight: 500; }
         .intro { margin-top: 1.5rem; max-width: 42rem; color: var(--muted); font-size: 1.05rem; }
@@ -187,13 +218,17 @@
             padding: 0.6rem 1rem; border-radius: 8px;
             border: 1px solid var(--line); color: var(--text);
             background: var(--bg-soft);
-            transition: border-color 0.2s, color 0.2s, background 0.2s;
+            transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
         }
-        .btn:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); color: var(--accent); }
+        .btn:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); color: var(--accent); transform: translateY(-2px); }
+        .btn:active { transform: translateY(0) scale(0.97); }
         .btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7;
             stroke-linecap: round; stroke-linejoin: round; }
-        .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-        .btn.primary:hover { background: color-mix(in srgb, var(--accent) 86%, #000); color: #fff; }
+        .btn.primary {
+            background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 66%, #8fbaff));
+            border-color: var(--accent); color: #fff;
+        }
+        .btn.primary:hover { color: #fff; filter: brightness(1.07); box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 34%, transparent); }
 
         /* ── About ── */
         .about p { color: var(--muted); font-size: 1.08rem; max-width: 44rem; }
@@ -213,9 +248,13 @@
             font-size: 0.82rem; color: var(--muted);
             padding: 0.32rem 0.7rem; border-radius: 999px;
             border: 1px solid var(--line); background: var(--bg-soft);
-            transition: color 0.2s, border-color 0.2s;
+            transition: color 0.2s, border-color 0.2s, transform 0.2s, background 0.2s;
         }
-        .chips li:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+        .chips li:hover {
+            color: var(--text); transform: translateY(-2px);
+            border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+            background: color-mix(in srgb, var(--accent) 8%, var(--bg-soft));
+        }
         @media (max-width: 620px) {
             .skill-row { grid-template-columns: 1fr; gap: 0.8rem; }
             .skill-cat { padding-top: 0; }
@@ -226,8 +265,10 @@
         .proj-item { display: block; padding: 1.9rem 0; border-top: 1px solid var(--line); }
         .proj-item:first-child { border-top: none; padding-top: 0; }
         .proj-top { display: flex; align-items: baseline; gap: 0.9rem; }
-        .proj-num { font-family: var(--mono); font-size: 0.75rem; color: var(--dim); flex-shrink: 0; width: 1.9rem; }
-        .proj-name { font-size: 1.18rem; font-weight: 560; letter-spacing: -0.01em; }
+        .proj-num { font-family: var(--mono); font-size: 0.75rem; color: var(--dim); flex-shrink: 0; width: 1.9rem; transition: color 0.25s; }
+        .proj-name { font-size: 1.18rem; font-weight: 560; letter-spacing: -0.01em; transition: color 0.25s; }
+        .proj-item:hover .proj-name { color: var(--accent); }
+        .proj-item:hover .proj-num { color: var(--accent); }
         .proj-body { padding-left: calc(1.9rem + 0.9rem); }
         @media (max-width: 520px) { .proj-body { padding-left: 0; margin-top: 0.5rem; } }
         .proj-tech {
@@ -272,9 +313,13 @@
         .socials a {
             width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
             border: 1px solid var(--line); border-radius: 9px; color: var(--muted);
-            transition: color 0.2s, border-color 0.2s;
+            transition: color 0.2s, border-color 0.2s, transform 0.2s, background 0.2s;
         }
-        .socials a:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+        .socials a:hover {
+            color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+            transform: translateY(-3px); background: color-mix(in srgb, var(--accent) 8%, transparent);
+        }
+        .socials a:active { transform: translateY(0) scale(0.94); }
         .socials svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7;
             stroke-linecap: round; stroke-linejoin: round; }
 
@@ -341,11 +386,14 @@
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
-            *,*::before,*::after { transition-duration: 0.01ms !important; }
+            *,*::before,*::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+            html.js .reveal { opacity: 1 !important; transform: none !important; }
         }
     </style>
 </head>
 <body>
+
+    <div class="scroll-progress" id="progress"></div>
 
     <header id="head">
         <div class="wrap head-inner">
@@ -686,6 +734,52 @@
 
         // Current year
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Scroll progress bar
+        var progress = document.getElementById('progress');
+        function updateProgress() {
+            var h = document.documentElement;
+            var max = h.scrollHeight - h.clientHeight;
+            var p = max > 0 ? h.scrollTop / max : 0;
+            progress.style.transform = 'scaleX(' + p + ')';
+        }
+        updateProgress();
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        window.addEventListener('resize', updateProgress);
+
+        // Scroll / load reveal with per-group stagger
+        (function () {
+            var targets = [];
+            ['.hero h1', '.hero .roles', '.hero .intro', '.hero .cta',
+             '#about .label', '#about > p', '#about .facts',
+             '#skills .label', '#skills .skill-row',
+             '#projects .label', '.proj-item',
+             '#contact .label', '#contact h2', '#contact > p'].forEach(function (sel) {
+                document.querySelectorAll(sel).forEach(function (el) {
+                    el.classList.add('reveal');
+                    targets.push(el);
+                });
+            });
+            // stagger delay by position among revealed siblings
+            targets.forEach(function (el) {
+                var sibs = Array.prototype.filter.call(el.parentElement.children, function (c) {
+                    return c.classList.contains('reveal');
+                });
+                var i = sibs.indexOf(el);
+                el.style.transitionDelay = Math.min(i, 6) * 70 + 'ms';
+            });
+
+            if (!('IntersectionObserver' in window)) {
+                targets.forEach(function (el) { el.classList.add('in'); });
+                return;
+            }
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+            targets.forEach(function (el) { io.observe(el); });
+        })();
 
         // Résumé modal
         var RESUME_PREVIEW = 'https://drive.google.com/file/d/1y1mxuJcnZayfUD5ltzB-zLyuRmgJPqDF/preview';
