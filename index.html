@@ -4,471 +4,708 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Realm of BitWyser</title>
+    <meta name="description" content="Mandar Patkar (aka BitWyser) is an Application Security Consultant and developer. Penetration testing, security projects, tools, and skills.">
+    <link rel="canonical" href="https://bitwyser.github.io/">
+
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Redressed&family=Ubuntu&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bitwyser.github.io/">
+    <meta property="og:title" content="Mandar Patkar, Application Security Consultant">
+    <meta property="og:description" content="Application Security Consultant and developer. I break applications to find the flaws that matter and build the tools, apps, and scripts I wish existed.">
+    <meta property="og:image" content="https://bitwyser.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="BitWyser">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mandar Patkar, Application Security Consultant">
+    <meta name="twitter:description" content="Application Security Consultant and developer. I break applications to find the flaws that matter and build the tools, apps, and scripts I wish existed.">
+    <meta name="twitter:image" content="https://bitwyser.github.io/og-image.png">
+    <script>
+        // Set theme before paint to avoid a flash
+        (function () {
+            try {
+                var t = localStorage.getItem('theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', t);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg:          #0f1117;
-            --surface:     #141921;
-            --border:      #1c2840;
-            --accent:      #4f8ef7;
-            --accent-soft: rgba(79,142,247,0.06);
-            --text:        #dde4f0;
-            --text-muted:  #5a6d8a;
-            --text-dim:    #283347;
+            --bg:        #0d0f13;
+            --bg-soft:   #12151b;
+            --line:      #20242e;
+            --text:      #e7eaf0;
+            --muted:     #8a91a0;
+            --dim:       #5b6270;
+            --accent:    #4f8ef7;
+            --maxw:      920px;
+            --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
         }
 
-        html {
-            font-size: 17px;          /* global size bump */
-            height: 100%;
-            overflow: hidden;
+        :root[data-theme="light"] {
+            --bg:      #ffffff;
+            --bg-soft: #f4f5f3;
+            --line:    #e2e3e0;
+            --text:    #14161b;
+            --muted:   #464c57;
+            --dim:     #6e7582;
+            --accent:  #2f6fe0;
         }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
         body {
-            height: 100%;
-            overflow: hidden;
             background: var(--bg);
             color: var(--text);
-            font-family: 'Ubuntu', sans-serif;  /* all over */
+            font-family: var(--sans);
+            font-size: 16px;
+            line-height: 1.65;
+            letter-spacing: -0.005em;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.25s, color 0.25s;
         }
 
-        /* ── Backgrounds ── */
-        .dot-grid {
-            position: fixed; inset: 0; pointer-events: none; z-index: 0;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 28px 28px;
-        }
-        .vignette {
-            position: fixed; inset: 0; pointer-events: none; z-index: 0;
-            background: radial-gradient(ellipse 90% 80% at 50% 50%, transparent 35%, rgba(8,10,18,0.8) 100%);
-        }
-        .blob-tl {
-            position: fixed; top: -15%; left: -10%;
-            width: 55%; height: 55%; pointer-events: none; z-index: 0;
-            background: radial-gradient(ellipse, rgba(79,142,247,0.04) 0%, transparent 70%);
-        }
-        .blob-br {
-            position: fixed; bottom: -15%; right: -10%;
-            width: 45%; height: 45%; pointer-events: none; z-index: 0;
-            background: radial-gradient(ellipse, rgba(99,130,255,0.04) 0%, transparent 70%);
-        }
-        #cursor-glow {
-            position: fixed; width: 650px; height: 650px;
-            border-radius: 50%; pointer-events: none; z-index: 0;
-            background: radial-gradient(circle, rgba(79,142,247,0.055) 0%, transparent 70%);
-            transform: translate(-50%, -50%); left: 50%; top: 50%;
-            transition: left 0.1s ease-out, top 0.1s ease-out;
-        }
+        a { color: inherit; text-decoration: none; }
 
-        /* ── Nav ── */
-        nav {
-            position: fixed; top: 1.6rem; left: 0; right: 0;
-            display: flex; justify-content: center; align-items: center; gap: 0.25rem;
-            z-index: 10; opacity: 0; animation: fade-in 0.6s ease 0.7s forwards;
-        }
-        .nav-btn {
-            background: none; border: none; cursor: pointer;
-            font-family: 'Ubuntu', sans-serif;
-            font-size: 0.72rem; letter-spacing: 0.1em; text-transform: lowercase;
-            color: var(--text-dim); padding: 0.28rem 0.6rem; border-radius: 5px;
-            transition: color 0.2s, background 0.2s;
-        }
-        .nav-btn:hover { color: var(--text-muted); }
-        .nav-btn.active { color: var(--accent); background: rgba(79,142,247,0.08); }
-        .nav-sep { font-size: 0.6rem; color: var(--text-dim); user-select: none; }
+        .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 2rem; }
+        @media (max-width: 560px) { .wrap { padding: 0 1.3rem; } }
+        @media (max-width: 380px) { .wrap { padding: 0 1.05rem; } }
 
-        /* ── Scene ── */
-        .scene {
-            position: fixed; inset: 0;
-            top: 3.2rem; bottom: 2.6rem;
-            display: flex; align-items: center; justify-content: center; z-index: 1;
-            overflow: hidden;           /* hard clip — nothing bleeds into nav or status */
-        }
-        .section {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            text-align: center; padding: 1.5rem 3rem;
-            opacity: 0; pointer-events: none; transform: translateY(14px);
-            transition: opacity 0.38s ease, transform 0.38s ease;
-        }
-        .section.active { opacity: 1; pointer-events: all; transform: translateY(0); }
+        section[id] { scroll-margin-top: 74px; }
 
-        /* ── HOME ── */
-        h1 {
-            font-family: 'Redressed', cursive;   /* cool name font */
-            font-size: clamp(2.8rem, 11vw, 6.2rem);
-            font-weight: 400;
-            letter-spacing: 0.03em;
-            white-space: nowrap;                  /* never wraps */
-            line-height: 1.1;
-            background: linear-gradient(150deg, #ffffff 0%, #9ec4ff 100%);
-            -webkit-background-clip: text; background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: default;
-            transition: filter 0.35s ease;
+        /* ── Header ── */
+        header {
+            position: sticky; top: 0; z-index: 20;
+            backdrop-filter: saturate(140%) blur(10px);
+            background: color-mix(in srgb, var(--bg) 78%, transparent);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s, background 0.25s;
         }
-        h1:hover { filter: drop-shadow(0 0 32px rgba(79,142,247,0.5)); }
-
-        .aka {
-            font-size: 0.85rem; color: var(--text-muted);
-            letter-spacing: 0.14em; text-transform: lowercase;
-            margin-top: 0.7rem;
+        header.stuck { border-bottom-color: var(--line); }
+        .head-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 62px; gap: 1rem;
         }
-
-        .divider {
-            width: 44px; height: 1.5px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            margin: 1.4rem 0;
+        .wordmark {
+            font-family: var(--mono); font-size: 0.92rem; font-weight: 600;
+            letter-spacing: 0.01em;
         }
-        .roles {
-            font-size: 0.82rem; color: var(--text-muted);
-            letter-spacing: 0.08em; margin-bottom: 2.4rem;
-        }
-        .roles .sep { margin: 0 0.5em; color: var(--text-dim); }
-        .roles::after {
-            content: '_'; color: var(--accent);
-            animation: blink 1.2s step-end 1s infinite;
-        }
-
-        .links { display: flex; gap: 0.7rem; justify-content: center; }
-        .link {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 46px; height: 46px;
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 10px; color: var(--text-muted); text-decoration: none;
-            transition: color 0.22s, border-color 0.22s, background 0.22s, transform 0.22s, box-shadow 0.22s;
-        }
-        .link:hover {
-            color: var(--accent); border-color: rgba(79,142,247,0.35);
-            background: var(--accent-soft); transform: translateY(-3px);
-            box-shadow: 0 8px 28px rgba(79,142,247,0.1);
-        }
-        .link svg {
-            width: 17px; height: 17px; fill: none; stroke: currentColor;
-            stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
-        }
-
-        /* ── ABOUT ── */
-        .about-body {
-            max-width: min(500px, 88vw);
-            font-size: 1rem; line-height: 1.85; color: var(--text-muted);
-        }
-        .about-body p + p { margin-top: 1.1rem; }
-        .about-body strong { color: var(--text); }
-
-        /* ── PROJECTS ── */
-        .project-list {
-            list-style: none;
-            width: min(640px, 90vw);   /* wide */
-            /* no max-height, no overflow — all items visible */
-            text-align: left;
-        }
-
-        /* Always-on accent style; hover shifts it further */
-        .project-item {
-            display: flex; align-items: flex-start; gap: 1rem;
-            padding: 0.6rem 0.9rem;
-            border-radius: 9px;
-            border-left: 2px solid rgba(79,142,247,0.22);   /* always visible */
-            background: rgba(79,142,247,0.04);               /* always visible */
-            margin-bottom: 7px;
-            transition: background 0.22s, border-color 0.22s, box-shadow 0.22s;
-        }
-        .project-item:hover {
-            background: rgba(79,142,247,0.1);
-            border-left-color: var(--accent);
-            box-shadow: 0 2px 20px rgba(79,142,247,0.08);
-        }
-
-        .project-info { flex: 1; min-width: 0; }
-
-        .project-name {
-            display: block;
-            font-size: 0.95rem;
-            letter-spacing: 0.01em; color: var(--text);
-            margin-bottom: 0.18rem;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        .wordmark .dot { color: var(--accent); }
+        .head-right { display: flex; align-items: center; gap: 1.6rem; }
+        nav.top { display: flex; gap: 1.4rem; }
+        nav.top a {
+            font-family: var(--mono); font-size: 0.78rem;
+            color: var(--muted); letter-spacing: 0.02em;
             transition: color 0.2s;
         }
-        .project-item:hover .project-name { color: var(--accent); }
+        nav.top a:hover { color: var(--text); }
 
-        .project-desc {
-            display: block;
-            font-size: 0.72rem; letter-spacing: 0.02em;
-            color: var(--text-muted); line-height: 1.5;
-        }
-
-        /* Action icons */
-        .project-actions {
-            display: flex; gap: 0.3rem;
-            align-items: flex-start; padding-top: 0.05rem; flex-shrink: 0;
-        }
-        .proj-btn {
+        .toggle {
             display: inline-flex; align-items: center; justify-content: center;
-            width: 28px; height: 28px; border-radius: 6px;
-            color: var(--text-muted); text-decoration: none;
-            transition: color 0.2s, background 0.2s;
+            width: 34px; height: 34px; border-radius: 8px;
+            border: 1px solid var(--line); background: var(--bg-soft);
+            color: var(--muted); cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
         }
-        .proj-btn:hover { color: var(--accent); background: rgba(79,142,247,0.15); }
-        .proj-btn svg {
-            width: 13px; height: 13px; fill: none; stroke: currentColor;
-            stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+        .toggle:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+        .toggle svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7;
+            stroke-linecap: round; stroke-linejoin: round; }
+        .toggle .moon { display: none; }
+        :root[data-theme="light"] .toggle .sun { display: none; }
+        :root[data-theme="light"] .toggle .moon { display: inline; }
+
+        @media (max-width: 620px) {
+            nav.top { gap: 0.9rem; }
+            nav.top a { font-size: 0.7rem; }
+            .head-right { gap: 1rem; }
+            .wordmark { font-size: 0.85rem; }
+            .toggle { width: 30px; height: 30px; }
+        }
+        @media (max-width: 400px) {
+            .head-inner { gap: 0.6rem; }
+            nav.top { gap: 0.62rem; }
+            nav.top a { font-size: 0.66rem; }
+            .head-right { gap: 0.7rem; }
+            .wordmark { font-size: 0.8rem; }
         }
 
-        /* Projects section scrolls within its own bounds — no visible scrollbar */
-        #projects {
-            justify-content: flex-start;   /* anchor to top, not centered */
-            overflow-y: auto;
-            scrollbar-width: none;         /* Firefox */
-            -ms-overflow-style: none;      /* IE / Edge */
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
+        /* ── Section scaffolding ── */
+        section {
+            min-height: 100vh; min-height: 100svh;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 6rem 0 9.5rem; border-top: 1px solid var(--line);
         }
-        #projects::-webkit-scrollbar { display: none; } /* Chrome / Safari */
-
-        .projects-more {
-            display: inline-block;
-            margin-top: 0.6rem;
-            font-size: 0.72rem; letter-spacing: 0.06em;
-            color: var(--text-muted); text-decoration: none;
-            padding: 0.35rem 0.9rem; border-radius: 7px;
-            border: 1px solid var(--border);
-            transition: color 0.2s, border-color 0.2s, background 0.2s;
-        }
-        .projects-more:hover {
-            color: var(--accent);
-            border-color: rgba(79,142,247,0.35);
-            background: var(--accent-soft);
-        }
-        .status {
-            position: fixed; bottom: 1.6rem; left: 0; right: 0;
-            display: flex; justify-content: center; align-items: center; gap: 0.5rem;
-            font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
-            color: var(--text-dim); user-select: none; z-index: 10;
-            opacity: 0; animation: fade-in 0.6s ease 1.0s forwards;
-        }
-        .status-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent); box-shadow: 0 0 8px rgba(79,142,247,0.75);
-            animation: pulse-dot 2.4s ease-in-out 1.5s infinite;
+        section:first-of-type { border-top: none; }
+        .label {
+            font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em;
+            text-transform: uppercase; color: var(--dim); margin-bottom: 1.8rem;
         }
 
-        /* ── Keyframes ── */
-        @keyframes fade-in { to { opacity: 1; } }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-        @keyframes pulse-dot {
-            0%,100%{opacity:1;transform:scale(1)}
-            50%{opacity:.35;transform:scale(.7)}
+        /* ── Hero ── */
+        .hero { border-top: none; padding-bottom: 9.5rem; }
+        h1 {
+            font-size: clamp(2.7rem, 8vw, 4.4rem);
+            font-weight: 620; letter-spacing: -0.035em; line-height: 1.0;
+        }
+        h1 .aka { display: block; font-size: 0.92rem; font-weight: 400; letter-spacing: 0.04em;
+            color: var(--dim); font-family: var(--mono); margin-top: 1rem; text-transform: lowercase; }
+        .roles { margin-top: 1.7rem; font-size: 1.1rem; color: var(--muted); }
+        .roles b { color: var(--text); font-weight: 500; }
+        .intro { margin-top: 1.5rem; max-width: 42rem; color: var(--muted); font-size: 1.05rem; }
+        .intro b { color: var(--text); font-weight: 500; }
+
+        .facts {
+            margin-top: 2.4rem; display: grid; gap: 1rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 44rem;
+        }
+        .fact {
+            border: 1px solid var(--line); border-radius: 12px;
+            padding: 1.1rem 1.2rem; background: var(--bg-soft);
+        }
+        .fact-k {
+            font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+        }
+        .fact-v { font-size: 1rem; color: var(--text); font-weight: 500; line-height: 1.4; }
+        .fact-v .sub { display: block; font-size: 0.86rem; color: var(--muted); font-weight: 400; margin-top: 0.15rem; }
+        @media (max-width: 560px) { .facts { grid-template-columns: 1fr; } }
+
+        .cta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.3rem; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.01em;
+            padding: 0.6rem 1rem; border-radius: 8px;
+            border: 1px solid var(--line); color: var(--text);
+            background: var(--bg-soft);
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+        .btn:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); color: var(--accent); }
+        .btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7;
+            stroke-linecap: round; stroke-linejoin: round; }
+        .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .btn.primary:hover { background: color-mix(in srgb, var(--accent) 86%, #000); color: #fff; }
+
+        /* ── About ── */
+        .about p { color: var(--muted); font-size: 1.08rem; max-width: 44rem; }
+        .about p + p { margin-top: 1.1rem; }
+        .about b { color: var(--text); font-weight: 500; }
+
+        /* ── Skills ── */
+        .skill-row {
+            display: grid; grid-template-columns: 210px 1fr; gap: 1.5rem;
+            padding: 1.6rem 0; border-top: 1px solid var(--line);
+        }
+        .skill-row:first-child { border-top: none; padding-top: 0; }
+        .skill-cat { font-family: var(--mono); font-size: 0.82rem; color: var(--text);
+            font-weight: 600; letter-spacing: 0.01em; padding-top: 0.2rem; }
+        .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .chips li {
+            font-size: 0.82rem; color: var(--muted);
+            padding: 0.32rem 0.7rem; border-radius: 999px;
+            border: 1px solid var(--line); background: var(--bg-soft);
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .chips li:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+        @media (max-width: 620px) {
+            .skill-row { grid-template-columns: 1fr; gap: 0.8rem; }
+            .skill-cat { padding-top: 0; }
         }
 
-        /* ── Mobile ── */
+        /* ── Projects ── */
+        .proj-list { display: flex; flex-direction: column; }
+        .proj-item { display: block; padding: 1.9rem 0; border-top: 1px solid var(--line); }
+        .proj-item:first-child { border-top: none; padding-top: 0; }
+        .proj-top { display: flex; align-items: baseline; gap: 0.9rem; }
+        .proj-num { font-family: var(--mono); font-size: 0.75rem; color: var(--dim); flex-shrink: 0; width: 1.9rem; }
+        .proj-name { font-size: 1.18rem; font-weight: 560; letter-spacing: -0.01em; }
+        .proj-body { padding-left: calc(1.9rem + 0.9rem); }
+        @media (max-width: 520px) { .proj-body { padding-left: 0; margin-top: 0.5rem; } }
+        .proj-tech {
+            font-family: var(--mono); font-size: 0.72rem; color: var(--dim);
+            letter-spacing: 0.01em; margin-top: 0.5rem;
+        }
+        .proj-desc { color: var(--muted); font-size: 1rem; margin-top: 0.55rem; max-width: 48rem; }
+        .proj-links { display: flex; gap: 1.1rem; margin-top: 0.9rem; }
+        .proj-links a {
+            font-family: var(--mono); font-size: 0.76rem; color: var(--dim);
+            display: inline-flex; align-items: center; gap: 0.35rem; transition: color 0.2s;
+        }
+        .proj-links a:hover { color: var(--accent); }
+        .proj-links svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.7;
+            stroke-linecap: round; stroke-linejoin: round; }
+        .proj-note {
+            font-family: var(--mono); font-size: 0.72rem; color: var(--dim);
+            margin-top: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;
+        }
+        .proj-note svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.7;
+            stroke-linecap: round; stroke-linejoin: round; }
+
+        .proj-more {
+            display: inline-flex; align-items: center; gap: 0.45rem;
+            margin-top: 2.6rem; font-family: var(--mono); font-size: 0.8rem;
+            color: var(--muted); transition: color 0.2s, gap 0.2s;
+        }
+        .proj-more:hover { color: var(--accent); gap: 0.7rem; }
+        .proj-more svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7;
+            stroke-linecap: round; stroke-linejoin: round; }
+
+        /* ── Contact ── */
+        .contact h2 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 600; letter-spacing: -0.03em; }
+        .contact p { color: var(--muted); margin-top: 0.8rem; max-width: 34rem; }
+        .contact .mail {
+            display: inline-block; margin-top: 1.6rem; font-size: 1.18rem;
+            color: var(--accent); border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+            padding-bottom: 2px; transition: border-color 0.2s;
+        }
+        .contact .mail:hover { border-bottom-color: var(--accent); }
+        .socials { display: flex; gap: 0.7rem; margin-top: 2rem; }
+        .socials a {
+            width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
+            border: 1px solid var(--line); border-radius: 9px; color: var(--muted);
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .socials a:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+        .socials svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7;
+            stroke-linecap: round; stroke-linejoin: round; }
+
+        /* ── Footer ── */
+        footer { border-top: 1px solid var(--line); padding: 2.2rem 0; }
+        .foot-inner {
+            font-family: var(--mono); font-size: 0.74rem; color: var(--dim);
+        }
+
+        /* ── Résumé modal ── */
+        .modal {
+            position: fixed; inset: 0; z-index: 100;
+            display: none; align-items: center; justify-content: center; padding: 1.2rem;
+        }
+        .modal.open { display: flex; }
+        .modal-backdrop {
+            position: absolute; inset: 0;
+            background: rgba(3, 5, 10, 0.72); backdrop-filter: blur(3px);
+            animation: fade 0.2s ease;
+        }
+        .modal-card {
+            position: relative; z-index: 1;
+            width: min(920px, 100%); height: min(88vh, 100%);
+            display: flex; flex-direction: column;
+            background: var(--bg); border: 1px solid var(--line); border-radius: 14px;
+            overflow: hidden; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+            animation: pop 0.22s ease;
+        }
+        .modal-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.65rem 0.65rem 0.65rem 1.15rem; border-bottom: 1px solid var(--line);
+        }
+        .modal-title { font-family: var(--mono); font-size: 0.85rem; font-weight: 600; }
+        .modal-actions { display: flex; align-items: center; gap: 0.45rem; }
+        .modal-link {
+            font-family: var(--mono); font-size: 0.74rem; color: var(--muted);
+            padding: 0.42rem 0.72rem; border: 1px solid var(--line); border-radius: 7px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .modal-link:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+        .modal-close {
+            width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
+            border: 1px solid var(--line); background: var(--bg-soft); color: var(--muted);
+            border-radius: 7px; font-size: 1.25rem; line-height: 1; cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .modal-close:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+        .modal-body { flex: 1; background: #fff; min-height: 0; }
+        .modal-body iframe { width: 100%; height: 100%; border: 0; display: block; }
+        body.modal-open { overflow: hidden; }
+        @keyframes fade { from { opacity: 0; } }
+        @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(0.99); } }
+
+        /* ── Small screens ── */
         @media (max-width: 600px) {
-            html { font-size: 15px; }
-
-            .section { padding: 1rem 1.1rem; }
-
-            h1 { font-size: clamp(2.9rem, 13.5vw, 6.2rem); }
-
-            .about-body { max-width: 100%; }
-
-            .project-list { width: 100%; }
-
-            .project-item {
-                padding: 0.42rem 0.75rem;
-                margin-bottom: 4px;
-            }
+            section { padding: 4.5rem 0 6rem; }
+            .hero { padding-top: 5rem; padding-bottom: 6rem; }
+            .roles { font-size: 1rem; }
+            .intro { font-size: 1rem; }
+            .about p { font-size: 1rem; }
+            .modal { padding: 0; }
+            .modal-card { width: 100%; height: 100%; border-radius: 0; border: 0; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
+            html { scroll-behavior: auto; }
+            *,*::before,*::after { transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
 <body>
 
-    <div class="dot-grid"></div>
-    <div class="vignette"></div>
-    <div class="blob-tl"></div>
-    <div class="blob-br"></div>
-    <div id="cursor-glow"></div>
+    <header id="head">
+        <div class="wrap head-inner">
+            <a href="#top" class="wordmark">BitWyser<span class="dot">.</span></a>
+            <div class="head-right">
+                <nav class="top">
+                    <a href="#about">about</a>
+                    <a href="#skills">skills</a>
+                    <a href="#projects">projects</a>
+                    <a href="#contact">contact</a>
+                </nav>
+                <button class="toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">
+                    <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
-    <nav>
-        <button class="nav-btn active" data-target="home">home</button>
-        <span class="nav-sep">·</span>
-        <button class="nav-btn" data-target="about">about</button>
-        <span class="nav-sep">·</span>
-        <button class="nav-btn" data-target="projects">projects</button>
-    </nav>
+    <main class="wrap" id="top">
 
-    <div class="scene">
-
-        <!-- HOME -->
-        <section id="home" class="section active">
-            <h1>I'm BitWyser</h1>
-            <p class="aka">aka mandar.</p>
-            <div class="divider"></div>
-            <p class="roles">
-                Engineer<span class="sep">·</span>Developer<span class="sep">·</span>Pentester
+        <!-- HERO -->
+        <section class="hero">
+            <h1>
+                Mandar Patkar
+                <span class="aka">aka bitwyser</span>
+            </h1>
+            <p class="roles"><b>Security Consultant</b> · <b>Developer</b></p>
+            <p class="intro">
+                I <b>break</b> things to understand how they fail, and I <b>build</b> things because I
+                can't leave a good idea alone. Security is where I go deepest; building is what fills
+                the rest of my time.
             </p>
-            <div class="links">
-                <a href="https://github.com/bitwyser" class="link" title="GitHub" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-                    </svg>
-                </a>
-                <a href="mailto:bitwyser@protonmail.com" class="link" title="Email">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22,6 12,13 2,6"/>
-                    </svg>
-                </a>
-                <a href="https://linkedin.com/in/mandarsh" class="link" title="LinkedIn" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                        <rect x="2" y="9" width="4" height="12"/>
-                        <circle cx="4" cy="4" r="2"/>
-                    </svg>
-                </a>
+            <div class="cta">
+                <button class="btn primary" id="hire-btn" type="button">
+                    <svg viewBox="0 0 24 24"><path d="M20 7h-4V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M8 7V5h8v2"/></svg>
+                    Hire me
+                </button>
+                <a href="#projects" class="btn">View projects</a>
             </div>
         </section>
 
         <!-- ABOUT -->
-        <section id="about" class="section">
-            <div class="about-body">
-                <p>
-                    A computer engineer who writes <strong>code that works</strong> and <strong>scripts that fail</strong> working code.
-                    I build backend systems. I penetrate applications to fix loopholes and secure the internet.
-                </p>
-                <p>
-                    I love science, math, technology, the ocean, space, time, and maybe everything that keeps me obsessed.
-                </p>
+        <section id="about" class="about">
+            <p class="label">About</p>
+            <p>
+                I am an <b>Application Security Consultant</b> by day, taking apart web, API, and mobile
+                applications to find where they break and fixing the gaps. Hacking is only half the story.
+                The other half is building applications, developer tools, and the odd script,
+                sometimes to sharpen my own workflow, sometimes just to see whether an idea holds up.
+            </p>
+            <p>
+                Beyond the screen, I stay endlessly curious about science, math, and technology, and just
+                as easily lost in the ocean, space, and time. Pretty much anything that keeps me obsessed.
+            </p>
+            <div class="facts">
+                <div class="fact">
+                    <div class="fact-k">Currently</div>
+                    <div class="fact-v">Application Security Consultant<span class="sub">CyRAACS · Mumbai</span></div>
+                </div>
+                <div class="fact">
+                    <div class="fact-k">Education</div>
+                    <div class="fact-v">Bachelor of Engineering<span class="sub">Computer Engineering</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills" class="skills">
+            <p class="label">Skills</p>
+
+            <div class="skill-row">
+                <h3 class="skill-cat">Security Testing</h3>
+                <ul class="chips">
+                    <li>Web App Pentesting</li>
+                    <li>API Pentesting</li>
+                    <li>Android Pentesting</li>
+                    <li>Network Pentesting</li>
+                    <li>VAPT</li>
+                    <li>Vulnerability Assessment</li>
+                    <li>Black-box &amp; Gray-box Testing</li>
+                    <li>OSINT</li>
+                </ul>
+            </div>
+
+            <div class="skill-row">
+                <h3 class="skill-cat">Standards &amp; Methodologies</h3>
+                <ul class="chips">
+                    <li>OWASP Top 10</li>
+                    <li>OWASP API Security Top 10</li>
+                    <li>OWASP MASVS (Mobile)</li>
+                    <li>Secure Coding Practices</li>
+                </ul>
+            </div>
+
+            <div class="skill-row">
+                <h3 class="skill-cat">Reverse Engineering</h3>
+                <ul class="chips">
+                    <li>Android Static &amp; Dynamic Analysis</li>
+                    <li>Reverse Engineering</li>
+                </ul>
+            </div>
+
+            <div class="skill-row">
+                <h3 class="skill-cat">Tooling</h3>
+                <ul class="chips">
+                    <li>Burp Suite</li>
+                    <li>Postman</li>
+                    <li>Metasploit</li>
+                    <li>Nmap</li>
+                    <li>sqlmap</li>
+                    <li>Wireshark</li>
+                    <li>MobSF</li>
+                    <li>Frida</li>
+                    <li>JADX</li>
+                    <li>ADB</li>
+                    <li>Kali Linux</li>
+                    <li>Git / GitHub</li>
+                </ul>
+            </div>
+
+            <div class="skill-row">
+                <h3 class="skill-cat">Languages</h3>
+                <ul class="chips">
+                    <li>Python</li>
+                    <li>JavaScript</li>
+                    <li>Node.js</li>
+                    <li>PHP</li>
+                    <li>C / C++</li>
+                    <li>SQL</li>
+                    <li>Bash</li>
+                </ul>
             </div>
         </section>
 
         <!-- PROJECTS -->
-        <section id="projects" class="section">
-            <ul class="project-list">
+        <section id="projects" class="projects">
+            <p class="label">Projects</p>
+            <div class="proj-list">
 
-                <li class="project-item">
-                    <div class="project-info">
-                        <span class="project-name">ArcheSpace</span>
-                        <span class="project-desc">ArcheSpace is an open source, private, encrypted space to organize everything you are working on.</span>
+                <article class="proj-item">
+                    <div class="proj-top">
+                        <span class="proj-num">01</span>
+                        <h3 class="proj-name">ArcheSpace</h3>
                     </div>
-                    <div class="project-actions">
-                        <a href="https://archespace.app/" class="proj-btn" title="Live Site" target="_blank" rel="noopener noreferrer">
-                            <!-- globe icon -->
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        </a>
-                        <a href="https://github.com/bitwyser/archespace" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <!-- git branch icon -->
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
+                    <div class="proj-body">
+                        <p class="proj-tech">React · Node.js · Supabase · PostgreSQL · Flutter · Dart · Tailwind CSS</p>
+                        <p class="proj-desc">Open-source, self-hostable workspace with a zero-knowledge, client-side encrypted vault so the backend stores only ciphertext, keeping data private. Built the encrypted sync layer, authentication flow, and a productivity suite spanning Note, Rich Text, Markdown, Lists, Checklist, Cards, Table, PIN-protected Secret, Drawing, Code, and TOTP Authenticator block types.</p>
+                        <div class="proj-links">
+                            <a href="https://github.com/bitwyser/archespace" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                Source
+                            </a>
+                            <a href="https://archespace.app/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                Live
+                            </a>
+                        </div>
                     </div>
-                </li>
+                </article>
 
-                <li class="project-item">
-                    <div class="project-info">
-                        <span class="project-name">Servd</span>
-                        <span class="project-desc">A portable local network server for desktop and Android. Run it and your PC or phone turns into a hub that other devices open right from a browser, with nothing to install.</span>
+                <article class="proj-item">
+                    <div class="proj-top">
+                        <span class="proj-num">02</span>
+                        <h3 class="proj-name">Servd</h3>
                     </div>
-                    <div class="project-actions">
-                        <a href="https://github.com/bitwyser/servd" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
+                    <div class="proj-body">
+                        <p class="proj-tech">Kotlin Multiplatform · Ktor · TLS · WebSocket · SSH/SFTP · FTPS</p>
+                        <p class="proj-desc">Turns any device (desktop or Android) into a self-hostable LAN hub reachable from a browser with no client install. Features an encrypted real-time dashboard with chat, live connected-device roster, drag-and-drop file sharing, browsable host folder access, a reverse proxy for re-serving a running web app to the LAN, and credential-jailed SSH/SFTP and FTPS servers.</p>
+                        <div class="proj-links">
+                            <a href="https://github.com/bitwyser/servd" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                Source
+                            </a>
+                        </div>
                     </div>
-                </li>
+                </article>
 
-                <li class="project-item">
-                    <div class="project-info">
-                        <span class="project-name">CyberKitchen</span>
-                        <span class="project-desc">Recipes for hackers. A fast, 100% client-side security and developer toolkit that runs entirely in your browser.</span>
+                <article class="proj-item">
+                    <div class="proj-top">
+                        <span class="proj-num">03</span>
+                        <h3 class="proj-name">CyberKitchen</h3>
                     </div>
-                    <div class="project-actions">
-                        <a href="https://bitwyser.github.io/CyberKitchen/" class="proj-btn" title="Live Site" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        </a>
-                        <a href="https://github.com/bitwyser/CyberKitchen" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
+                    <div class="proj-body">
+                        <p class="proj-tech">HTML · CSS · Vanilla JavaScript</p>
+                        <p class="proj-desc">Recipes for hackers. A fast, 100% client-side security and developer toolkit that runs entirely in the browser, bundling encryption, hashing, key derivation, encoding, developer utilities, and data generators into one installable, offline-first app.</p>
+                        <div class="proj-links">
+                            <a href="https://github.com/bitwyser/CyberKitchen" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                Source
+                            </a>
+                            <a href="https://bitwyser.github.io/CyberKitchen/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                Live
+                            </a>
+                        </div>
                     </div>
-                </li>
+                </article>
 
-                <li class="project-item">
-                    <div class="project-info">
-                        <span class="project-name">Debloater.sh</span>
-                        <span class="project-desc">Android debloater script using ADB, written in bash shell.</span>
+                <article class="proj-item">
+                    <div class="proj-top">
+                        <span class="proj-num">04</span>
+                        <h3 class="proj-name">Blockchain E-KYC</h3>
                     </div>
-                    <div class="project-actions">
-                        <a href="https://github.com/bitwyser/debloater.sh" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
+                    <div class="proj-body">
+                        <p class="proj-tech">Solidity · Ethereum · Node.js · React.js · Truffle · Ganache · Web3 · MetaMask</p>
+                        <p class="proj-desc">Decentralized identity verification platform on Ethereum that produces secure, tamper-proof, and reusable KYC records. Basis for a peer-reviewed Springer research paper.</p>
+                        <div class="proj-links">
+                            <a href="https://github.com/bitwyser/E-KYC" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                Source
+                            </a>
+                        </div>
                     </div>
-                </li>
+                </article>
 
-                <li class="project-item">
-                    <div class="project-info">
-                        <span class="project-name">Hosts Script</span>
-                        <span class="project-desc">A Bash utility that generates a unique, sorted, consolidated hosts blocklist from multiple sources.</span>
+                <article class="proj-item">
+                    <div class="proj-top">
+                        <span class="proj-num">05</span>
+                        <h3 class="proj-name">Debloater.sh</h3>
                     </div>
-                    <div class="project-actions">
-                        <a href="https://github.com/bitwyser/Hosts" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
+                    <div class="proj-body">
+                        <p class="proj-tech">Bash / Shell</p>
+                        <p class="proj-desc">The Android debloater script using ADB, written in bash. Debloating system bloatware improves privacy and battery performance by removing unnecessary and obscure system apps.</p>
+                        <div class="proj-links">
+                            <a href="https://github.com/bitwyser/debloater.sh" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                Source
+                            </a>
+                        </div>
                     </div>
-                </li>
+                </article>
 
-                <li class="project-item">
-                    <div class="project-info">
-                        <span class="project-name">Cheatsheets</span>
-                        <span class="project-desc">TL;DR for devs, captured while experimenting with new technologies.</span>
+                <article class="proj-item">
+                    <div class="proj-top">
+                        <span class="proj-num">06</span>
+                        <h3 class="proj-name">Cheatsheets</h3>
                     </div>
-                    <div class="project-actions">
-                        <a href="https://bitwyser.github.io/Cheatsheets/" class="proj-btn" title="Live Site" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        </a>
-                        <a href="https://github.com/bitwyser/Cheatsheets" class="proj-btn" title="Source Code" target="_blank" rel="noopener noreferrer">
-                            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        </a>
+                    <div class="proj-body">
+                        <p class="proj-tech">HTML · CSS · Bootstrap · JavaScript</p>
+                        <p class="proj-desc">TL;DR for devs, captured while experimenting with new technologies.</p>
+                        <div class="proj-links">
+                            <a href="https://github.com/bitwyser/Cheatsheets" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                Source
+                            </a>
+                            <a href="https://bitwyser.github.io/Cheatsheets/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                Live
+                            </a>
+                        </div>
                     </div>
-                </li>
+                </article>
 
-            </ul>
+                <article class="proj-item">
+                    <div class="proj-top">
+                        <span class="proj-num">07</span>
+                        <h3 class="proj-name">Hosts Script</h3>
+                    </div>
+                    <div class="proj-body">
+                        <p class="proj-tech">Bash / Shell</p>
+                        <p class="proj-desc">A Bash-based utility that generates a unique, sorted, and consolidated hosts blocklist from multiple sources.</p>
+                        <div class="proj-links">
+                            <a href="https://github.com/bitwyser/Hosts" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                Source
+                            </a>
+                        </div>
+                    </div>
+                </article>
 
-            <a class="projects-more" href="https://github.com/bitwyser" target="_blank" rel="noopener noreferrer">
-                Want more? Check out all projects on GitHub
+            </div>
+
+            <a class="proj-more" href="https://github.com/bitwyser" target="_blank" rel="noopener noreferrer">
+                All projects on GitHub
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
         </section>
 
+        <!-- CONTACT -->
+        <section id="contact" class="contact">
+            <p class="label">Contact</p>
+            <h2>Let's build or break something.</h2>
+            <p>Got software to break, an idea to build, or just want to talk tech? My inbox is always open.</p>
+            <a class="mail" href="mailto:bitwyser@protonmail.com">bitwyser@protonmail.com</a>
+            <div class="socials">
+                <a href="https://github.com/bitwyser" title="GitHub" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                </a>
+                <a href="mailto:bitwyser@protonmail.com" title="Email">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </a>
+                <a href="https://linkedin.com/in/mandarsh" title="LinkedIn" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- RÉSUMÉ MODAL -->
+    <div class="modal" id="resume-modal">
+        <div class="modal-backdrop" data-close></div>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-label="Résumé">
+            <div class="modal-head">
+                <span class="modal-title">Résumé</span>
+                <div class="modal-actions">
+                    <a class="modal-link" href="https://drive.google.com/file/d/1y1mxuJcnZayfUD5ltzB-zLyuRmgJPqDF/view" target="_blank" rel="noopener noreferrer">Open in Drive</a>
+                    <button class="modal-close" type="button" data-close aria-label="Close résumé">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <iframe id="resume-frame" title="Résumé" allow="autoplay"></iframe>
+            </div>
+        </div>
     </div>
 
-    <div class="status">
-        <div class="status-dot"></div>
-        Live
-    </div>
+    <footer>
+        <div class="wrap foot-inner">
+            © <span id="year">2026</span> BitWyser
+        </div>
+    </footer>
 
     <script>
-        // Cursor glow
-        const glow = document.getElementById('cursor-glow');
-        document.addEventListener('mousemove', e => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top  = e.clientY + 'px';
+        // Header hairline on scroll
+        var head = document.getElementById('head');
+        var onScroll = function () { head.classList.toggle('stuck', window.scrollY > 8); };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        // Theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            var cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            var next = cur === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) {}
         });
 
-        // Section switching
-        const navBtns  = document.querySelectorAll('.nav-btn');
-        const sections = document.querySelectorAll('.section');
-        navBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                navBtns.forEach(b  => b.classList.remove('active'));
-                sections.forEach(s => s.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(btn.dataset.target).classList.add('active');
-            });
+        // Current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Résumé modal
+        var RESUME_PREVIEW = 'https://drive.google.com/file/d/1y1mxuJcnZayfUD5ltzB-zLyuRmgJPqDF/preview';
+        var resumeModal = document.getElementById('resume-modal');
+        var resumeFrame = document.getElementById('resume-frame');
+        function openResume() {
+            if (!resumeFrame.src) resumeFrame.src = RESUME_PREVIEW;
+            resumeModal.classList.add('open');
+            document.body.classList.add('modal-open');
+        }
+        function closeResume() {
+            resumeModal.classList.remove('open');
+            document.body.classList.remove('modal-open');
+        }
+        document.getElementById('hire-btn').addEventListener('click', openResume);
+        resumeModal.addEventListener('click', function (e) {
+            if (e.target.hasAttribute('data-close')) closeResume();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && resumeModal.classList.contains('open')) closeResume();
         });
     </script>
 
